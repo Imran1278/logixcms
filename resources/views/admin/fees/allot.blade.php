@@ -3,39 +3,43 @@
 @section('page_title', 'Allot Custom Fee Structure')
 
 @section('content')
-<div class="container py-3">
-    <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-header bg-dark text-white p-3">
+<div class="container py-4">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-dark text-white p-4">
             <h5 class="mb-0 text-white"><i class="fa-solid fa-file-invoice-dollar me-2 text-warning"></i> Fee Structure Allotment</h5>
         </div>
-        <div class="card-body p-4">
+        <div class="card-body p-4 p-md-5">
             
             <!-- 1. Student Info Summary Card -->
-            <div class="bg-light p-3 rounded-3 border mb-4">
-                <div class="row g-3">
+            <div class="bg-light p-4 rounded-4 border mb-4">
+                <div class="row g-4">
                     <div class="col-md-3">
-                        <small class="text-muted fw-bold d-block">STUDENT NAME</small>
+                        <span class="text-muted fw-bold d-block fs-8 text-uppercase mb-1">Student Name</span>
                         <span class="fs-6 fw-bold text-dark">{{ $admission->student_name }}</span>
                     </div>
                     <div class="col-md-3">
-                        <small class="text-muted fw-bold d-block">REG / ROLL NO</small>
-                        <span class="badge bg-dark font-monospace">{{ $admission->registration_no }}</span>
+                        <span class="text-muted fw-bold d-block fs-8 text-uppercase mb-1">Reg / Roll No</span>
+                        <span class="badge bg-dark font-monospace px-2 py-1">{{ $admission->registration_no }}</span>
                     </div>
                     <div class="col-md-3">
-                        <small class="text-muted fw-bold d-block">COURSE / CLASS</small>
+                        <span class="text-muted fw-bold d-block fs-8 text-uppercase mb-1">Course / Class</span>
                         <span class="fw-semibold text-dark">{{ $admission->course->course_name ?? $admission->course->title ?? 'N/A' }}</span>
                     </div>
                     <div class="col-md-3">
-                        <small class="text-muted fw-bold d-block">GUARDIAN & CONTACT</small>
-                        <span class="text-dark">{{ $admission->father_name }} ({{ $admission->mobile_number ?? $admission->mobile_contact ?? 'N/A' }})</span>
+                        <span class="text-muted fw-bold d-block fs-8 text-uppercase mb-1">Guardian & Contact</span>
+                        <span class="text-dark">{{ $admission->father_name }} <span class="text-muted font-monospace small">({{ $admission->mobile_number ?? $admission->mobile_contact ?? 'N/A' }})</span></span>
                     </div>
                 </div>
             </div>
 
             @if($feeHeads->isEmpty())
-                <div class="alert alert-warning border-warning rounded-3 mb-4">
-                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
-                    <strong>No Fee Heads Found!</strong> Please create fee heads first (e.g. Tuition Fee, Admission Fee) in the Fee Settings before creating allocations.
+                <div class="alert alert-warning border-0 shadow-sm rounded-4 mb-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-triangle-exclamation fs-4 me-3 text-warning"></i>
+                        <div>
+                            <strong>No Fee Heads Found!</strong> Please create fee heads first (e.g., Tuition Fee, Admission Fee) under Fee Settings before configuring allocations.
+                        </div>
+                    </div>
                 </div>
             @endif
 
@@ -43,10 +47,10 @@
                 @csrf
                 <input type="hidden" name="admission_id" value="{{ $admission->id }}">
 
-                <div class="row mb-3">
+                <div class="row g-4 mb-4">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Academic Session / Year</label>
-                        <select name="academic_session" class="form-select shadow-sm" required>
+                        <label class="form-label fw-bold text-secondary">Academic Session / Year <span class="text-danger">*</span></label>
+                        <select name="academic_session" class="form-select shadow-none" required>
                             @forelse($sessions ?? [] as $session)
                                 <option value="{{ $session->title }}">{{ $session->title }}</option>
                             @empty
@@ -56,28 +60,31 @@
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Default Installment Due Date</label>
-                        <input type="date" name="default_due_date" class="form-control shadow-sm" value="{{ date('Y-m-10', strtotime('+1 month')) }}" required>
+                        <label class="form-label fw-bold text-secondary">Default Installment Due Date <span class="text-danger">*</span></label>
+                        <input type="date" name="default_due_date" class="form-control shadow-none" value="{{ date('Y-m-10', strtotime('+1 month')) }}" required>
                     </div>
                 </div>
 
                 <!-- 2. Fee Heads Breakdown -->
-                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-list-check me-1 text-warning"></i> Custom Fee Heads & Amounts</h6>
-                <div class="table-responsive mb-4">
-                    <table class="table table-bordered align-middle" id="feeHeadsTable">
-                        <thead class="table-dark">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold text-dark mb-0"><i class="fa-solid fa-list-check me-2 text-warning"></i> Custom Fee Heads & Amounts</h6>
+                </div>
+                
+                <div class="table-responsive border rounded-4 mb-4 bg-white">
+                    <table class="table table-hover align-middle mb-0" id="feeHeadsTable">
+                        <thead class="table-dark text-uppercase fs-8">
                             <tr>
-                                <th>Fee Head</th>
-                                <th>Frequency</th>
-                                <th>Amount (PKR)</th>
-                                <th>Due Date</th>
-                                <th class="text-center" style="width: 50px;">Action</th>
+                                <th class="py-3 ps-3">Fee Head</th>
+                                <th class="py-3">Frequency</th>
+                                <th class="py-3">Amount (PKR)</th>
+                                <th class="py-3">Due Date</th>
+                                <th class="py-3 text-center" style="width: 70px;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="feeHeadRows">
                             <tr>
-                                <td>
-                                    <select name="fee_heads[0][head_id]" class="form-select" required {{ $feeHeads->isEmpty() ? 'disabled' : '' }}>
+                                <td class="ps-3">
+                                    <select name="fee_heads[0][head_id]" class="form-select shadow-none" required {{ $feeHeads->isEmpty() ? 'disabled' : '' }}>
                                         <option value="">-- Select Fee Head --</option>
                                         @foreach($feeHeads as $head)
                                             <option value="{{ $head->id }}">{{ $head->name ?? $head->head_name }} ({{ $head->type ?? 'General' }})</option>
@@ -85,7 +92,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="fee_heads[0][frequency]" class="form-select">
+                                    <select name="fee_heads[0][frequency]" class="form-select shadow-none">
                                         @forelse($frequencies ?? [] as $freq)
                                             <option value="{{ $freq->title }}">{{ $freq->title }}</option>
                                         @empty
@@ -96,31 +103,34 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="number" name="fee_heads[0][amount]" class="form-control head-amount" placeholder="0.00" oninput="calculateGrandTotal()" required>
+                                    <input type="number" name="fee_heads[0][amount]" class="form-control head-amount shadow-none" placeholder="0.00" oninput="calculateGrandTotal()" required>
                                 </td>
                                 <td>
-                                    <input type="date" name="fee_heads[0][due_date]" class="form-control" value="{{ date('Y-m-10', strtotime('+1 month')) }}">
+                                    <input type="date" name="fee_heads[0][due_date]" class="form-control shadow-none" value="{{ date('Y-m-10', strtotime('+1 month')) }}">
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa-solid fa-trash"></i></button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger remove-row border-0"><i class="fa-solid fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="btn btn-sm btn-outline-dark fw-bold" id="addHeadBtn" {{ $feeHeads->isEmpty() ? 'disabled' : '' }}>
+                </div>
+
+                <div class="mb-4">
+                    <button type="button" class="btn btn-outline-dark fw-bold px-3" id="addHeadBtn" {{ $feeHeads->isEmpty() ? 'disabled' : '' }}>
                         <i class="fa-solid fa-plus me-1 text-primary"></i> Add Custom Fee Head
                     </button>
                 </div>
 
                 <!-- 3. Scholarship & Concessions -->
-                <div class="row bg-light p-3 rounded-3 border mb-4">
+                <div class="row g-4 bg-light p-4 rounded-4 border mb-4">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Discount / Concession Amount (PKR)</label>
-                        <input type="number" name="discount_amount" id="discount_amount" class="form-control" value="0" oninput="calculateGrandTotal()">
+                        <label class="form-label fw-bold text-secondary">Discount / Concession Amount (PKR)</label>
+                        <input type="number" name="discount_amount" id="discount_amount" class="form-control shadow-none" value="0" oninput="calculateGrandTotal()">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Concession Reason / Scholarship</label>
-                        <select name="discount_reason" class="form-select">
+                        <label class="form-label fw-bold text-secondary">Concession Reason / Scholarship</label>
+                        <select name="discount_reason" class="form-select shadow-none">
                             <option value="">-- Choose Reason / Scholarship --</option>
                             @forelse($scholarshipReasons ?? [] as $reason)
                                 <option value="{{ $reason->title }}">{{ $reason->title }}</option>
@@ -132,26 +142,26 @@
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Approved By</label>
-                        <input type="text" name="discount_approved_by" class="form-control" value="{{ Auth::user()->name ?? 'Principal' }}">
+                        <label class="form-label fw-bold text-secondary">Approved By</label>
+                        <input type="text" name="discount_approved_by" class="form-control shadow-none" value="{{ Auth::user()->name ?? 'Principal' }}">
                     </div>
                 </div>
 
-                <!-- 4. Grand Total Summary -->
-                <div class="card bg-warning text-dark border-0 mb-4 shadow-sm">
-                    <div class="card-body d-flex justify-content-between align-items-center">
+                <!-- 4. Grand Total Summary Card -->
+                <div class="card bg-warning text-dark border-0 mb-4 shadow-sm rounded-4">
+                    <div class="card-body p-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
                         <div>
-                            <h6 class="mb-0 fw-bold">TOTAL AGREED NET ALLOTMENT:</h6>
-                            <small class="text-dark">Net payable after applying dynamic fee heads and discounts</small>
+                            <h6 class="mb-1 fw-bold text-uppercase">Total Agreed Net Allotment:</h6>
+                            <small class="text-dark opacity-75">Net payable amount evaluated dynamically after fee heads and applied concessions.</small>
                         </div>
-                        <h3 class="fw-bold mb-0" id="grandTotalDisplay">PKR 0.00</h3>
+                        <h2 class="fw-bold mb-0 text-dark font-monospace" id="grandTotalDisplay">PKR 0.00</h2>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end gap-2">
-                    <a href="{{ route('fees.index') }}" class="btn btn-light border px-4 fw-bold">Cancel</a>
-                    <button type="submit" class="btn btn-success fw-bold px-4 py-2" {{ $feeHeads->isEmpty() ? 'disabled' : '' }}>
-                        <i class="fa-solid fa-check-circle me-1"></i> Confirm & Save Allotment
+                <div class="d-flex justify-content-end align-items-center gap-3 pt-3 border-top">
+                    <a href="{{ route('fees.index') }}" class="btn btn-light border px-4 py-2 fw-bold text-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-success fw-bold px-4 py-2 shadow-sm" {{ $feeHeads->isEmpty() ? 'disabled' : '' }}>
+                        <i class="fa-solid fa-check-circle me-2"></i> Confirm & Save Allotment
                     </button>
                 </div>
             </form>
@@ -167,8 +177,8 @@ document.getElementById('addHeadBtn').addEventListener('click', function() {
     let row = document.createElement('tr');
     
     row.innerHTML = `
-        <td>
-            <select name="fee_heads[${rowIndex}][head_id]" class="form-select" required>
+        <td class="ps-3">
+            <select name="fee_heads[${rowIndex}][head_id]" class="form-select shadow-none" required>
                 <option value="">-- Select Fee Head --</option>
                 @foreach($feeHeads as $head)
                     <option value="{{ $head->id }}">{{ $head->name ?? $head->head_name }} ({{ $head->type ?? 'General' }})</option>
@@ -176,7 +186,7 @@ document.getElementById('addHeadBtn').addEventListener('click', function() {
             </select>
         </td>
         <td>
-            <select name="fee_heads[${rowIndex}][frequency]" class="form-select">
+            <select name="fee_heads[${rowIndex}][frequency]" class="form-select shadow-none">
                 @forelse($frequencies ?? [] as $freq)
                     <option value="{{ $freq->title }}">{{ $freq->title }}</option>
                 @empty
@@ -187,13 +197,13 @@ document.getElementById('addHeadBtn').addEventListener('click', function() {
             </select>
         </td>
         <td>
-            <input type="number" name="fee_heads[${rowIndex}][amount]" class="form-control head-amount" placeholder="0.00" oninput="calculateGrandTotal()" required>
+            <input type="number" name="fee_heads[${rowIndex}][amount]" class="form-control head-amount shadow-none" placeholder="0.00" oninput="calculateGrandTotal()" required>
         </td>
         <td>
-            <input type="date" name="fee_heads[${rowIndex}][due_date]" class="form-control" value="{{ date('Y-m-10', strtotime('+1 month')) }}">
+            <input type="date" name="fee_heads[${rowIndex}][due_date]" class="form-control shadow-none" value="{{ date('Y-m-10', strtotime('+1 month')) }}">
         </td>
         <td class="text-center">
-            <button type="button" class="btn btn-sm btn-danger remove-row"><i class="fa-solid fa-trash"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-danger remove-row border-0"><i class="fa-solid fa-trash"></i></button>
         </td>
     `;
     tbody.appendChild(row);

@@ -1,9 +1,15 @@
+<!-- resources/views/admin/fees/index.blade.php -->
 @extends('layouts.app')
 
 @section('page_title', 'Fee Directory & Collections')
 
 @push('styles')
 <style>
+    :root {
+        --logix-navy: #0B2545;
+        --logix-gold: #D4AF37;
+        --logix-gold-hover: #E5C158;
+    }
     .fee-card {
         background: #ffffff;
         border: 1px solid #e2e8f0;
@@ -11,14 +17,14 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     }
     .fee-header {
-        background: #0b2545;
+        background: var(--logix-navy);
         color: #ffffff;
         border-radius: 16px 16px 0 0 !important;
         padding: 18px 24px;
     }
     .btn-gold-action {
-        background-color: #d4af37;
-        color: #0b2545;
+        background-color: var(--logix-gold);
+        color: var(--logix-navy);
         font-weight: 700;
         border-radius: 8px;
         padding: 6px 14px;
@@ -26,8 +32,8 @@
         transition: all 0.25s ease;
     }
     .btn-gold-action:hover {
-        background-color: #c4a028;
-        color: #000000;
+        background-color: var(--logix-gold-hover);
+        color: var(--logix-navy);
         box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
     }
 </style>
@@ -43,9 +49,8 @@
             <p class="text-muted small mb-0">Manage student vouchers, assign custom fee structures, and collect online/cash payments.</p>
         </div>
         <div class="d-flex gap-2 flex-wrap">
-            <!-- Manage Fee Heads Button -->
             <a href="{{ route('fees.heads.index') }}" class="btn btn-outline-dark fw-bold rounded-3 shadow-sm">
-                <i class="fa-solid fa-gear text-primary me-1"></i> Manage Fee Heads
+                <i class="fa-solid fa-gear text-warning me-1"></i> Manage Fee Heads
             </a>
             <a href="{{ route('fees.settings.index') }}" class="btn btn-outline-secondary fw-bold rounded-3 shadow-sm">
                 <i class="fa-solid fa-sliders text-warning me-1"></i> Fee Configurations
@@ -53,7 +58,7 @@
             <a href="{{ route('fees.defaulters') }}" class="btn btn-outline-danger fw-bold rounded-3 shadow-sm">
                 <i class="fa-solid fa-triangle-exclamation me-1"></i> Defaulters List
             </a>
-            <button class="btn btn-dark fw-bold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#assignFeeModal">
+            <button class="btn fw-bold rounded-3 shadow-sm" style="background-color: var(--logix-navy); color: var(--logix-gold);" data-bs-toggle="modal" data-bs-target="#assignFeeModal">
                 <i class="fa-solid fa-plus-circle text-warning me-1"></i> Quick Collect Fee
             </button>
         </div>
@@ -186,7 +191,7 @@
         <div class="modal-content border-0 shadow-lg rounded-4">
             <form action="{{ route('fees.store') }}" method="POST">
                 @csrf
-                <div class="modal-header bg-dark text-white">
+                <div class="modal-header text-white" style="background-color: var(--logix-navy);">
                     <h5 class="modal-title fw-bold fs-6" id="assignFeeModalLabel">
                         <i class="fa-solid fa-plus-circle text-warning me-2"></i> Quick Collect Fee
                     </h5>
@@ -228,7 +233,7 @@
                 </div>
                 <div class="modal-footer bg-light">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-dark btn-sm px-4">Submit Payment</button>
+                    <button type="submit" class="btn btn-sm px-4 fw-bold" style="background-color: var(--logix-navy); color: var(--logix-gold);">Submit Payment</button>
                 </div>
             </form>
         </div>

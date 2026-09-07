@@ -107,4 +107,9 @@ class Admission extends Model
         $discount = $this->discount_amount ?? 0;
         return ($this->total_agreed_fee - $discount) - $this->paid_fee;
     }
+
+    public function certificate()
+    {
+        return $this->hasOne(Certificate::class, 'admission_id');
+    }
 }

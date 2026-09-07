@@ -1,19 +1,25 @@
+<!-- resources/views/admin/fees/receipt.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Official Receipt #{{ $fee->receipt_no }} - Logix College</title>
+    <title>Official Receipt #{{ $fee->receipt_no }} - LOGIX CMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --brand-navy: #0b2545;
-            --brand-gold: #d4af37;
+            --logix-navy-dark: #050E1A;
+            --logix-navy: #0B2545;
+            --logix-gold: #D4AF37;
+            --logix-gold-hover: #E5C158;
+            --logix-card-bg: #FFFFFF;
+            --logix-border: rgba(212, 175, 55, 0.3);
         }
         body { 
-            background: #f1f5f9; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #050E1A; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
             color: #334155;
         }
         .receipt-container {
@@ -21,40 +27,43 @@
             margin: 30px auto;
         }
         .single-receipt {
-            background: #ffffff;
-            border: 2px solid var(--brand-navy);
-            border-radius: 12px;
+            background: var(--logix-card-bg);
+            border: 1px solid var(--logix-border);
+            border-radius: 16px;
             padding: 30px;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         .copy-tag {
             position: absolute;
             top: 0;
             right: 0;
-            background: var(--brand-navy);
-            color: var(--brand-gold);
+            background: var(--logix-navy);
+            color: var(--logix-gold);
             font-size: 0.75rem;
             font-weight: 800;
-            padding: 4px 16px;
-            border-bottom-left-radius: 10px;
-            border-top-right-radius: 10px;
-            text-uppercase: uppercase;
-            letter-spacing: 1px;
+            padding: 6px 18px;
+            border-bottom-left-radius: 12px;
+            border-top-right-radius: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-left: 1px solid var(--logix-gold);
+            border-bottom: 1px solid var(--logix-gold);
         }
         .header-title { 
-            color: var(--brand-navy); 
+            color: var(--logix-navy); 
             font-weight: 800; 
             letter-spacing: -0.5px;
         }
         .receipt-table th {
-            background-color: var(--brand-navy) !important;
-            color: #ffffff !important;
+            background-color: var(--logix-navy) !important;
+            color: var(--logix-gold) !important;
             font-size: 0.85rem;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .cut-line {
-            border-top: 2px dashed #cbd5e1;
+            border-top: 2px dashed rgba(212, 175, 55, 0.4);
             margin: 35px 0;
             position: relative;
             text-align: center;
@@ -64,17 +73,18 @@
             top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: #f1f5f9;
-            padding: 0 10px;
-            color: #94a3b8;
+            background: #050E1A;
+            padding: 0 12px;
+            color: var(--logix-gold);
         }
 
         @media print {
             .no-print { display: none !important; }
-            body { background: #fff !important; }
+            body { background: #fff !important; color: #000 !important; }
             .receipt-container { margin: 0; max-width: 100%; }
-            .single-receipt { border: 1.5px solid #000; box-shadow: none; padding: 20px; page-break-inside: avoid; }
-            .cut-line i { background: #fff; }
+            .single-receipt { border: 1px solid #000; box-shadow: none; padding: 20px; page-break-inside: avoid; }
+            .cut-line i { background: #fff; color: #000; }
+            .copy-tag { background: #000 !important; color: #fff !important; }
         }
     </style>
 </head>
@@ -82,12 +92,12 @@
 
 <div class="receipt-container">
 
-    <div class="d-flex justify-content-between align-items-center mb-4 no-print bg-white p-3 rounded-3 border shadow-sm">
-        <a href="{{ route('fees.index') }}" class="btn btn-outline-secondary fw-bold">
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print bg-white p-3 rounded-4 border shadow-sm">
+        <a href="{{ route('fees.index') }}" class="btn btn-outline-dark fw-bold rounded-3">
             <i class="fa-solid fa-arrow-left me-1"></i> Back to Fees List
         </a>
-        <button onclick="window.print()" class="btn btn-primary fw-bold px-4" style="background-color: var(--brand-navy); border: none;">
-            <i class="fa-solid fa-print me-2 text-warning"></i> Print Fee Receipt
+        <button onclick="window.print()" class="btn fw-bold px-4 rounded-3" style="background-color: var(--logix-navy); color: var(--logix-gold); border: 1px solid var(--logix-gold);">
+            <i class="fa-solid fa-print me-2"></i> Print Fee Receipt
         </button>
     </div>
 
@@ -97,7 +107,7 @@
         
         <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
             <div>
-                <h3 class="header-title mb-0"><i class="fa-solid fa-graduation-cap text-warning me-2"></i>LOGIX COLLEGE</h3>
+                <h3 class="header-title mb-0"><i class="fa-solid fa-graduation-cap text-warning me-2"></i>LOGIX CMS</h3>
                 <small class="text-muted fw-bold">Official Student Fee Payment Voucher</small>
             </div>
             <div class="text-end me-4">
@@ -179,11 +189,11 @@
 
     <!-- Office Copy -->
     <div class="single-receipt">
-        <div class="copy-tag" style="background-color: #475569;">Office Copy</div>
+        <div class="copy-tag" style="background-color: #334155;">Office Copy</div>
         
         <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
             <div>
-                <h3 class="header-title mb-0"><i class="fa-solid fa-graduation-cap text-warning me-2"></i>LOGIX COLLEGE</h3>
+                <h3 class="header-title mb-0"><i class="fa-solid fa-graduation-cap text-warning me-2"></i>LOGIX CMS</h3>
                 <small class="text-muted fw-bold">Official Fee Payment Voucher (Accounts Copy)</small>
             </div>
             <div class="text-end me-4">
